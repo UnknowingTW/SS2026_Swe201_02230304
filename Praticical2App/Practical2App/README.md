@@ -1,50 +1,108 @@
-# Welcome to your Expo app 👋
+# Practical 2 — Timetable App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Aim
 
-## Get started
+Build a small Expo/React Native app with 3 screens (Home, Timetable/Details, Settings) that demonstrates responsive layouts and navigation.
 
-1. Install dependencies
+## Objective
 
-   ```bash
-   npm install
-   ```
+Create a timetable view that adapts to screen width (columns on wide screens, stacked cards on narrow screens), allow tapping a class to view its details, and provide a Settings screen with a simple toggle.
 
-2. Start the app
+## Learning Outcomes
 
-   ```bash
-   npx expo start
-   ```
+- Understand and use Expo Router / React Navigation for multi-screen apps.
+- Build responsive UI in React Native using `useWindowDimensions` and flexbox.
+- Pass parameters between screens/pages and read them in a details view.
+- Reuse existing components and wire them into a tab-based layout.
 
-In the output, you'll find options to open the app in a
+## Requirements
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js and npm (or yarn)
+- Expo CLI (optional) or use `npx expo` commands
+- A device or simulator (Android/iOS) or the Expo Go app
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Procedure (short)
 
-## Get a fresh project
-
-When you're ready, run:
+1) In the project folder `Practical2App/Practical2App` install deps:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2) Start Expo:
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3) Open the app (simulator or Expo Go) → select the "Timetable" tab → tap a class to view details.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Program / Code
 
-## Join the community
+The app source is located under `app/` and `screens/` in this project. Key files added/edited for Practical 2:
 
-Join our community of developers creating universal apps.
+- `app/(tabs)/_layout.tsx` — tab layout (added a Timetable tab and Settings tab)
+- `app/(tabs)/timetable.tsx` — the responsive timetable screen (grid on wide screens, stacked cards on narrow screens)
+- `app/details.tsx` — details route that reads params and displays class information
+- `app/(tabs)/settings.tsx` — wrapper that re-uses `screens/SettingsScreen.js`
+- `screens/HomeScreen.js`, `screens/DetailsScreen.js`, `screens/SettingsScreen.js` — supporting screens already present
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+If you publish this source to an online repository (GitHub/GitLab/Bitbucket), add the repository URL here:
+
+Repository URL: <replace-with-your-repo-URL>
+
+## Output (screenshots)
+
+Please capture screenshots and place them in `assets/screenshots/` in the project. Recommended captures:
+
+- `timetable-phone-portrait.png` — phone portrait (narrow, stacked view)
+- `timetable-phone-landscape.png` — phone landscape
+- `timetable-tablet.png` — tablet or wide window (columns grid)
+- `details.png` — class details screen
+
+Example: after running on a device, use the simulator/device screenshot tools and copy images into `assets/screenshots/`.
+
+NOTE: I didn't include generated images in the repo. Add them and reference them here when available, for example:
+
+![Timetable (phone portrait)](./assets/screenshots/timetable-phone-portrait.png)
+
+## Observations
+
+- The timetable layout switches cleanly between stacked and multi-column when the window width crosses ~700 px.
+- Using `Link` from `expo-router` to navigate to `/details` with params works well and keeps URLs bookmarkable when running for web.
+- Reusing `ThemedView` and `ThemedText` (existing components) keeps the timetable consistent with the app theme.
+
+## Problems Encountered
+
+- TypeScript/JSX typing: when iterating object keys directly, TypeScript complained about indexing with a `string`, so I switched to `Object.entries()` with a typed cast for safe iteration.
+- Minor route wiring: the app uses file-based routing (Expo Router) so tab screens must exist under the `app/(tabs)` folder; I added `timetable.tsx` and a `settings.tsx` wrapper to expose the `SettingsScreen` from `screens/`.
+- Images/screenshots are not generated by the code — capture them manually on your device and add them to `assets/screenshots`.
+
+## Conclusion
+
+The Practical2App demonstrates a responsive timetable view that adapts to screen size, navigation between tabs and a details route, and a simple Settings screen. The implementation uses Expo Router and standard React Native layout practices (`useWindowDimensions`, flexbox). You can extend the app by loading timetable data from an API or local storage, adding editing/CRUD for classes, or improving styles and animations.
+
+### Next steps (optional)
+
+- Move the inline timetable sample data into a JSON file under `constants/` and load it dynamically.
+- Add persistent settings using `AsyncStorage`.
+- Create and add the suggested screenshots into `assets/screenshots` by launching the app here and capturing images.
+- Produce a ready-to-publish GitHub repository (create `package.json` adjustments, set license, and create a README badge and repo link).
+
+## References
+
+- Expo documentation — Getting started, deployment, and guides: https://docs.expo.dev/
+- Expo Router — File-based routing for Expo: https://expo.github.io/router/docs
+- React Native docs — Core components, layout and APIs: https://reactnative.dev/docs/getting-started
+- React Navigation — Navigation patterns and native-stack: https://reactnavigation.org/docs/getting-started
+- MDN: CSS Flexible Box Layout (Flexbox) — concepts used for layout: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout
+- `useWindowDimensions` — React Native hook for responsive breakpoints: https://reactnative.dev/docs/usewindowdimensions
+- @react-native-async-storage/async-storage — persistent storage for mobile apps: https://github.com/react-native-async-storage/async-storage
+- TypeScript handbook — types and casting guidance: https://www.typescriptlang.org/docs/handbook/intro.html
+- Expo Image (used in app examples): https://docs.expo.dev/versions/latest/sdk/image/
+
+If you used any textbooks, lecture notes, or external code snippets, add them here so examiners can trace your sources.
+
+---
+
+If you want me to update the `Repository URL` with a live link, or to commit screenshots into `assets/screenshots` now, tell me and I'll continue.
